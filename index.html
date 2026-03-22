@@ -17,25 +17,32 @@
       padding: 0;
     }
 
+    :root {
+      --bg: #f7f5f0;
+      --ink: #1a1a18;
+      --muted: #9a9890;
+    }
+
     html, body {
       height: 100%;
     }
 
     body {
+      background-color: var(--bg);
+      color: var(--ink);
       font-family: 'DM Sans', sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      transition: background-color 0.4s ease;
     }
 
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 0;
     }
@@ -60,6 +67,7 @@
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1;
+      color: var(--ink);
       opacity: 0;
       transform: translateY(-28px);
       filter: blur(6px);
@@ -97,19 +105,26 @@
       font-weight: 300;
       letter-spacing: 0.14em;
       text-transform: lowercase;
+      color: var(--ink);
     }
 
     .year {
       font-size: 0.7rem;
       font-weight: 300;
       letter-spacing: 0.1em;
+      color: var(--muted);
     }
 
     .email {
       font-size: 0.7rem;
       font-weight: 300;
       letter-spacing: 0.1em;
+      color: var(--muted);
       text-decoration: none;
+    }
+
+    .email:hover {
+      color: var(--ink);
     }
 
     @keyframes place {
@@ -127,7 +142,7 @@
 <body>
   <main>
     <h1>hi there!</h1>
-    <p class="tagline">every electron counts.</p>
+    <p class="tagline" id="tagline">every electron counts.</p>
   </main>
 
   <footer>
@@ -137,35 +152,29 @@
   </footer>
 
   <script>
-    // Handpicked dark palettes: [background, heading, muted text]
-    const themes = [
-      { bg: '#0f1117', ink: '#e8e4dc', muted: '#5a5a6a' }, // deep navy-black
-      { bg: '#1a1209', ink: '#e6d9b8', muted: '#6b5c3a' }, // dark amber
-      { bg: '#0d1a14', ink: '#c8ddd1', muted: '#3d5c4a' }, // deep forest
-      { bg: '#1a0f1a', ink: '#e0d0e8', muted: '#6a4a7a' }, // dark plum
-      { bg: '#0f1a1a', ink: '#c8dcdc', muted: '#3a5a5a' }, // dark teal
-      { bg: '#1a1010', ink: '#e8d0cc', muted: '#7a4a46' }, // deep burgundy
-      { bg: '#141414', ink: '#d8d4cc', muted: '#525250' }, // pure charcoal
-      { bg: '#0e1520', ink: '#ccd8e8', muted: '#3a4e6a' }, // midnight blue
+    // All colors are dark enough to be legible on #f7f5f0
+    const accents = [
+      '#6b4e2a', // warm brown
+      '#2a5c45', // forest green
+      '#3a4e7a', // slate blue
+      '#7a3a4e', // dusty rose
+      '#4a3a7a', // muted violet
+      '#5c4a1a', // aged gold
+      '#2a5a5a', // dark teal
+      '#6b3a2a', // terracotta
+      '#3a5c3a', // deep sage
+      '#5a3a6b', // plum
     ];
 
-    const theme = themes[Math.floor(Math.random() * themes.length)];
+    const color = accents[Math.floor(Math.random() * accents.length)];
+    document.getElementById('tagline').style.color = color;
 
-    document.body.style.backgroundColor = theme.bg;
-    document.body.style.color = theme.ink;
-
-    document.querySelectorAll('h1').forEach(el => el.style.color = theme.ink);
-    document.querySelectorAll('.tagline, .year, .email').forEach(el => el.style.color = theme.muted);
-    document.querySelector('.domain').style.color = theme.ink;
-
-    // Domain & email
     const hostname = window.location.hostname || 'yourdomain.com';
     const email = 'hi@' + hostname;
     document.getElementById('domain').textContent = hostname;
     document.getElementById('year').textContent = new Date().getFullYear();
     document.getElementById('email').textContent = email;
     document.getElementById('email').href = 'mailto:' + email;
-    document.getElementById('email').style.color = theme.muted;
   </script>
 </body>
 </html>
